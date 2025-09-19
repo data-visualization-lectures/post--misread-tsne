@@ -2,8 +2,8 @@
 <link href="material-icons.css" rel="stylesheet">
 <script src="https://distill.pub/template.v1.js"></script>
 <script type="text/front-matter">
-  title: How to Use t-SNE Effectively
-  description: Although extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading.
+  title: t-SNEを効果的に使用する方法
+  description: 高次元データの可視化には非常に有用ですが、t-SNEプロットは時として謎めいていたり誤解を招いたりすることがあります。
   authors:
     - Martin Wattenberg: http://hint.fm/
     - "Fernanda Viégas": http://hint.fm/
@@ -407,8 +407,9 @@ input[type=range]:focus::-ms-fill-upper {
 </dt-include>
 
 <dt-article>
-  <h1 class="l-middle">How to Use t-SNE Effectively</h1>
-  <h2 class="l-middle">Although extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading. By exploring how it behaves in simple cases, we can learn to use it more effectively.</h2>
+  <h1 class="l-middle">t-SNEを効果的に使用する方法</h1>
+  <h2 class="l-middle">高次元データの可視化には非常に有用ですが、t-SNEプロットは時として謎めいていたり誤解を招いたりすることがあります。単純なケースでの動作を探ることで、より効果的に使用する方法を学ぶことができます。</h2>
+
   <div class="l-page">
     <dt-include src="assets/playground.html"><style>
   #playground {
@@ -688,147 +689,148 @@ input[type=range]:focus::-ms-fill-upper {
 </dt-include>
   </div>
   <dt-byline></dt-byline>
-  <p>A popular method for exploring high-dimensional data is something called t-SNE, introduced by <dt-cite key="maaten2008visualizing">van der Maaten and Hinton in 2008</dt-cite>. The technique has become widespread in the field of machine learning, since it has an almost magical ability to create compelling two-dimensonal "maps" from data with hundreds or even thousands of dimensions.
-Although impressive, these images can be tempting to misread. The purpose of this note is to prevent some common misreadings.</p>
 
-  <p>We'll walk through a series of simple examples to illustrate what t-SNE diagrams can and cannot show. The t-SNE technique really is useful—but only if you know how to interpret it.</p>
+<p>高次元データを探索するための人気の手法の一つに、<dt-cite key="maaten2008visualizing">2008年にvan der MaatenとHintonによって導入された</dt-cite>t-SNEと呼ばれるものがあります。この技術は、数百または数千の次元を持つデータから魅力的な二次元の「マップ」を作成するほぼ魔法のような能力を持っているため、機械学習の分野で広く普及しています。
+印象的ではありますが、これらの画像は誤読を招きやすい場合があります。この記事の目的は、よくある誤読を防ぐことです。</p>
 
-  <p>Before diving in: if you haven't encountered t-SNE before, here's what you need to know about the math behind it. The goal is to take a set of points in a high-dimensional space and find a faithful representation of those points in a lower-dimensional space, typically the 2D plane. The algorithm is non-linear and adapts to the underlying data, performing different transformations on different regions. Those differences can be a major source of confusion.</p>
+<p>t-SNE図が何を示すことができ、何を示すことができないかを説明するために、一連の簡単な例を見ていきます。t-SNE技術は本当に有用ですが、それは正しく解釈する方法を知っている場合に限ります。</p>
 
-  <p>A second feature of t-SNE is a tuneable parameter, "perplexity," which says (loosely) how to balance attention between local and global aspects of your data. The parameter is, in a sense, a guess about the number of close neighbors each point has. The perplexity value has a complex effect on the resulting pictures. The original paper says, <em>"The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50."</em> But the story is more nuanced than that. Getting the most from t-SNE may mean analyzing multiple plots with different perplexities.</p>
+<p>本題に入る前に：t-SNEに初めて触れる場合は、その背後にある数学について知っておくべきことをお話しします。目標は、高次元空間内の点の集合を取り、通常は2次元平面である低次元空間でそれらの点の忠実な表現を見つけることです。このアルゴリズムは非線形で、基礎となるデータに適応し、異なる領域で異なる変換を実行します。これらの違いが混乱の主な原因となる可能性があります。</p>
 
-  <p>That's not the end of the complications. The t-SNE algorithm doesn't always produce similar output on successive runs, for example, and there are additional hyperparameters related to the optimization process.</p>
+<p>t-SNEの2つ目の特徴は、「パープレキシティ」と呼ばれる調整可能なパラメータで、これは（大まかに言えば）データの局所的側面と大域的側面のどちらに注意を向けるかのバランスを決めるものです。このパラメータは、ある意味では、各点が持つ近接近傍点の数についての推測です。パープレキシティ値は、結果として得られる図に複雑な影響を与えます。元の論文では、<em>「SNEの性能はパープレキシティの変化に対してかなり頑健であり、典型的な値は5から50の間である」</em>と述べています。しかし、実際はもっと微妙な話です。t-SNEを最大限に活用するには、異なるパープレキシティで複数のプロットを分析することが必要かもしれません。</p>
+
+<p>複雑さはこれで終わりではありません。例えば、t-SNEアルゴリズムは連続する実行で常に類似した出力を生成するわけではありませんし、最適化プロセスに関連する追加のハイパーパラメータもあります。</p>
 
   <hr>
 
-  <h2>1. Those hyperparameters really matter</h2>
+<h2>1. ハイパーパラメータは本当に重要</h2>
 
-  <p>Let's start with the "hello world" of t-SNE: a data set of two widely separated clusters. To make things as simple as possible, we'll consider clusters in a 2D plane, as shown in the lefthand diagram. (For clarity, the two clusters are color coded.) The diagrams at right show t-SNE plots for five different perplexity values.</p>
+<p>t-SNEの「hello world」から始めましょう：大きく離れた2つのクラスターからなるデータセットです。できるだけシンプルにするために、左図に示すように2次元平面内のクラスターを考えます。（分かりやすくするため、2つのクラスターは色分けされています。）右側の図は、5つの異なるパープレキシティ値でのt-SNEプロットを示しています。</p>
 
   <div class="l-page-outset tsne-group" id="figures-01" data-id="01">
   </div>
 
-  <p>With perplexity values in the range (5 - 50) suggested by van der Maaten &amp; Hinton, the diagrams do show these clusters, although with very different shapes. Outside that range, things get a little weird. With perplexity 2, local variations dominate. The image for perplexity 100, with merged clusters, illustrates a pitfall: for the algorithm to operate properly, the perplexity really should be smaller than the number of points. Implementations can give unexpected behavior otherwise.</p>
+<p>van der Maaten & Hintonが提案した範囲（5 - 50）のパープレキシティ値では、図はこれらのクラスターを示していますが、形状は大きく異なります。その範囲外では、少し奇妙なことが起こります。パープレキシティが2の場合、局所的な変動が支配的になります。クラスターが融合したパープレキシティ100の画像は、落とし穴を示しています：アルゴリズムが適切に動作するためには、パープレキシティは点の数よりも小さくあるべきです。そうでなければ、実装は予期しない動作を示すことがあります。</p>
 
-  <p>Each of the plots above was made with 5,000 iterations with a learning rate (often called "epsilon") of 10, and had reached a point of stability by step 5,000. How much of a difference do those values make? In our experience, the most important thing is to iterate until reaching a stable configuration.</p>
+<p>上記の各プロットは、学習率（しばしば「イプシロン」と呼ばれる）10で5,000回の反復で作成され、ステップ5,000までに安定点に達していました。これらの値はどの程度の違いを生むのでしょうか？私たちの経験では、最も重要なことは、安定した配置に到達するまで反復することです。</p>
 
   <div class="l-page-outset tsne-group" id="figures-02" data-id="02">
   </div>
 
-  <p>The images above show five different runs at perplexity 30. The first four were stopped before stability. After 10, 20, 60, and 120 steps you can see layouts with seeming 1-dimensional and even pointlike images of the clusters. If you see a t-SNE plot with strange "pinched" shapes, chances are the process was stopped too early. Unfortunately, there's no fixed number of steps that yields a stable result. Different data sets can require different numbers of iterations to converge.</p>
+<p>上記の画像は、パープレキシティ30での5つの異なる実行を示しています。最初の4つは安定する前に停止されました。10、20、60、120ステップ後には、クラスターの1次元的、さらには点状の画像のように見えるレイアウトを確認できます。奇妙な「つまんだ」形状のt-SNEプロットを見た場合、プロセスが早すぎる段階で停止された可能性があります。残念ながら、安定した結果をもたらす固定されたステップ数はありません。異なるデータセットは、収束するために異なる反復数を必要とする場合があります。</p>
 
-  <p>Another natural question is whether different runs with the same hyperparameters produce the same results. In this simple two-cluster example, and most of the others we discuss, multiple runs give the same global shape. Certain data sets, however, yield markedly different diagrams on different runs; we'll give an example of one of these later.</p>
+<p>もう一つの自然な疑問は、同じハイパーパラメータでの異なる実行が同じ結果を生成するかどうかです。この単純な2クラスターの例、およびこれから議論する他のほとんどの例では、複数の実行は同じ大域的形状を与えます。しかし、特定のデータセットでは、異なる実行で著しく異なる図が得られます。これについては後でその例の一つを示します。</p>
 
-  <p>From now on, unless otherwise stated, we'll show results from 5,000 iterations. That's generally enough for convergence in the (relatively small) examples in this essay. We'll keep showing a range of perplexities, however, since that seems to make a big difference in every case.</p>
+<p>今後、特に断りのない限り、5,000回の反復からの結果を示します。これは、このエッセイの（比較的小さな）例における収束には一般的に十分です。ただし、パープレキシティの範囲は引き続き示します。なぜなら、これがすべてのケースで大きな違いを生むように思われるからです。</p>
 
   <hr>
 
-  <h2>2. Cluster sizes in a t-SNE plot mean nothing</h2>
+<h2>2. t-SNEプロットにおけるクラスターサイズは意味がない</h2>
 
-  <p>So far, so good. But what if the two clusters have different standard deviations, and so different sizes? (By size we mean bounding box measurements, not number of points.) Below are t-SNE plots for a mixture of Gaussians in plane, where one is 10 times as dispersed as the other.</p>
+<p>ここまでは順調です。しかし、2つのクラスターが異なる標準偏差を持ち、そのため異なるサイズを持つ場合はどうでしょうか？（サイズとは、点の数ではなく、境界ボックスの測定値を意味します。）以下は、平面上のガウス分布の混合のt-SNEプロットで、一方が他方の10倍分散している場合です。</p>
 
   <div class="l-page-outset tsne-group" id="figures-03" data-id="03">
   </div>
 
-  <p>Surprisingly, the two clusters look about same size in the t-SNE plots.
-  What's going on? The t-SNE algorithm adapts its notion of "distance" to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes. To be clear, this is a different effect than the run-of-the-mill fact that any dimensionality reduction technique will distort distances. (After all, in this example all data was two-dimensional to begin with.) Rather, density equalization happens by design and is a predictable feature of t-SNE.</p>
+<p>驚くことに、2つのクラスターはt-SNEプロットでは同じくらいのサイズに見えます。
+何が起こっているのでしょうか？t-SNEアルゴリズムは、データセット内の地域的密度変動に合わせて「距離」の概念を適応させます。その結果、密なクラスターを自然に拡張し、疎なクラスターを収縮させ、クラスターサイズを均等化します。明確にしておくと、これは次元削減技術が距離を歪めるという一般的な事実とは異なる効果です。（結局のところ、この例ではすべてのデータは最初から2次元でした。）むしろ、密度の均等化は設計によって起こり、t-SNEの予測可能な特徴なのです。</p>
 
-  <p>The bottom line, however, is that you cannot see relative sizes of clusters in a t-SNE plot.</p>
+<p>しかし、結論として、t-SNEプロットではクラスターの相対的なサイズを見ることはできません。</p>
 
   <hr>
 
-  <h2>3. Distances between clusters might not mean anything</h2>
+<h2>3. クラスター間の距離は意味がないかもしれない</h2>
 
-  <p>What about distances <em>between</em> clusters? The next diagrams show three Gaussians of 50 points each, one pair being 5 times as far apart as another pair.</p>
+<p>クラスター<em>間</em>の距離についてはどうでしょうか？次の図は、それぞれ50点からなる3つのガウス分布を示しており、一方のペアがもう一方のペアの5倍離れています。</p>
 
   <div class="l-page-outset tsne-group" id="figures-04" data-id="04">
   </div>
 
-  <p>At perplexity 50, the diagram gives a good sense of the global geometry. For lower perplexity values the clusters look equidistant. When the perplexity is 100, we see the global geometry fine, but one of the cluster appears, falsely, much smaller than the others.
-  Since perplexity 50 gave us a good picture in this example, can we always set perplexity to 50 if we want to see global geometry?</p>
+<p>パープレキシティ50では、図は大域的幾何学の良い感覚を与えます。より低いパープレキシティ値では、クラスターは等距離に見えます。パープレキシティが100の場合、大域的幾何学は良く見えますが、クラスターの1つが他のものよりもはるかに小さく、誤って表示されます。
+この例ではパープレキシティ50が良い結果を与えたので、大域的幾何学を見たい場合は常にパープレキシティを50に設定できるでしょうか？</p>
 
-  <p>Sadly, no. If we add more points to each cluster, the perplexity has to increase to compensate. Here are the t-SNE diagrams for three Gaussian clusters with 200 points each, instead of 50. Now none of the trial perplexity values gives a good result.</p>
+<p>残念ながら、そうではありません。各クラスターにより多くの点を追加すると、それを補償するためにパープレキシティを増加させる必要があります。ここでは、50点ではなく200点ずつの3つのガウシアンクラスターのt-SNE図を示します。今度は、試行したパープレキシティ値のいずれも良い結果を与えません。</p>
 
   <div class="l-page-outset tsne-group" id="figures-05" data-id="05">
   </div>
 
-  <p>It's bad news that seeing global geometry requires fine-tuning perplexity. Real-world data would probably have multiple clusters with different numbers of elements. There may not be one perplexity value that will capture distances across all clusters—and sadly perplexity is a global parameter. Fixing this problem might be an interesting area for future research.</p>
+<p>大域的幾何学を見るためにパープレキシティの微調整が必要であることは悪いニュースです。実世界のデータでは、おそらく異なる数の要素を持つ複数のクラスターがあるでしょう。すべてのクラスター間の距離を捉える単一のパープレキシティ値は存在しないかもしれません—そして残念ながらパープレキシティは大域的パラメータです。この問題を修正することは、将来の研究の興味深い分野かもしれません。</p>
 
-  <p>The basic message is that distances between well-separated clusters in a t-SNE plot may mean nothing.</p>
+<p>基本的なメッセージは、t-SNEプロットにおいて十分に分離されたクラスター間の距離は何も意味しない可能性があるということです。</p>
 
   <hr>
 
-  <h2>4. Random noise doesn't always look random.</h2>
+<h2>4. ランダムノイズは必ずしもランダムに見えない</h2>
 
-  <p>A classic pitfall is thinking you see patterns in what is really just random data. Recognizing noise when you see it is a critical skill, but it takes time to build up the right intuitions. A tricky thing about t-SNE is that it throws a lot of existing intuition out the window.
-  The next diagrams show genuinely random data, 500 points drawn from a unit Gaussian distribution in 100 dimensions. The left image is a projection onto the first two coordinates.</p>
+<p>典型的な落とし穴は、実際にはただのランダムデータである中にパターンを見ていると思い込むことです。ノイズを見たときにそれを認識することは重要なスキルですが、適切な直感を身につけるには時間がかかります。t-SNEについて厄介なことは、それが既存の直感の多くを無意味にしてしまうことです。
+次の図は真にランダムなデータ、100次元の単位ガウス分布から抽出された500点を示しています。左の画像は最初の2つの座標への投影です。</p>
 
   <div class="l-page-outset tsne-group" id="figures-06" data-id="06">
   </div>
 
-  <p>The plot with perplexity 2 seems to show dramatic clusters. If you were tuning perplexity to bring out structure in the data, you might think you'd hit the jackpot.</p>
+<p>パープレキシティ2のプロットは劇的なクラスターを示しているように見えます。データ内の構造を引き出すためにパープレキシティを調整していた場合、大当たりを引いたと思うかもしれません。</p>
 
-  <p>Of course, since we know the cloud of points was generated randomly, it has no statistically interesting clusters: those "clumps" aren't meaningful. If you look back at previous examples, low perplexity values often lead to this kind of distribution. Recognizing these clumps as random noise is an important part of reading t-SNE plots.</p>
+<p>もちろん、点の雲がランダムに生成されたことを知っているので、統計的に興味深いクラスターは存在しません：これらの「塊」は意味がないのです。以前の例を振り返ると、低いパープレキシティ値はしばしばこの種の分布につながります。これらの塊をランダムノイズとして認識することは、t-SNEプロットを読む上で重要な部分です。</p>
 
-  <p>There's something else interesting, though, which may be a win for t-SNE. At first the perplexity 30 plot doesn't look like a Gaussian distribution at all: there's only a slight density difference across different regions of the cloud, and the points seem suspiciously evenly distributed. In fact, these features are saying useful things about high-dimensional normal distributions, which are very close to uniform distributions on a sphere: evenly distributed, with roughly equal spaces between points. Seen in this light, the t-SNE plot is more accurate than any linear projection could be.</p>
+<p>しかし、他にも興味深いことがあり、これはt-SNEの勝利かもしれません。最初、パープレキシティ30のプロットは全くガウス分布のようには見えません：雲の異なる領域間でわずかな密度差しかなく、点は疑わしいほど均等に分布しているように見えます。実際、これらの特徴は高次元正規分布について有用なことを語っており、高次元正規分布は球面上の均等分布に非常に近く、均等に分布し、点間の間隔がほぼ等しいのです。この観点から見ると、t-SNEプロットはどの線形投影よりも正確です。</p>
 
   <hr>
 
-  <h2>5. You can see some shapes, sometimes</h2>
+<h2>5. 時には形状を見ることができる</h2>
 
-  <p>It's rare for data to be distributed in a perfectly symmetric way. Let's take a look at an axis-aligned Gaussian distribution in 50 dimensions, where the standard deviation in coordinate i is 1/i. That is, we're looking at a long-ish ellipsoidal cloud of points.</p>
+<p>データが完全に対称的な方法で分布することはまれです。50次元の軸に沿ったガウス分布を見てみましょう。ここで、座標iでの標準偏差は1/iです。つまり、やや長い楕円体状の点の雲を見ているのです。</p>
 
   <div class="l-page-outset tsne-group" id="figures-07" data-id="07">
   </div>
 
-  <p>For high enough perplexity values, the elongated shapes are easy to read. On the other hand, at low perplexity, local effects and meaningless "clumping" take center stage. More extreme shapes also come through, but again only at the right perplexity. For example, here are two clusters of 75 points each in 2D, arranged in parallel lines with a bit of noise.</p>
+  <p>十分に高いパープレキシティ値では、細長い形状は読み取りやすくなります。一方、低いパープレキシティでは、局所的効果と意味のない「クラスタリング」が中心となります。より極端な形状も現れますが、これも適切なパープレキシティでのみです。例えば、ここでは2次元の平行線上に少しノイズを加えて配置された、それぞれ75点からなる2つのクラスターを示します。</p>
 
   <div class="l-page-outset tsne-group" id="figures-08" data-id="08">
   </div>
 
-  <p>For a certain range of perplexity the long clusters look close to correct, which is reassuring.</p>
+<p>特定のパープレキシティの範囲では、長いクラスターは正しく見えるに近く、これは安心できます。</p>
 
-  <p>Even in the best cases, though, there's a subtle distortion: the lines are slightly curved outwards in the t-SNE diagram. The reason is that, as usual, t-SNE tends to expand denser regions of data. Since the middles of the clusters have less empty space around them than the ends, the algorithm magnifies them.</p>
+<p>しかし、最良の場合でも微妙な歪みがあります：t-SNE図では線がわずかに外側に湾曲しています。その理由は、いつものように、t-SNEがデータのより密な領域を拡張する傾向があるからです。クラスターの中央部は端部よりも周囲の空の空間が少ないため、アルゴリズムはそれらを拡大します。</p>
 
-  <hr>
+<hr>
 
-  <h2>6. For topology, you may need more than one plot</h2>
+<h2>6. 位相幾何学には複数のプロットが必要な場合がある</h2>
 
-  <p>Sometimes you can read topological information off a t-SNE plot, but that typically requires views at multiple perplexities.
-  One of the simplest topological properties is containment. The plots below show two groups of 75 points in 50 dimensional space. Both are sampled from symmetric Gaussian distributions centered at the origin, but one is 50 times more tightly dispersed than the other. The "small" distribution is in effect contained in the large one.</p>
+<p>時にはt-SNEプロットから位相情報を読み取ることができますが、それには通常、複数のパープレキシティでの表示が必要です。
+最も単純な位相的性質の一つは包含です。以下のプロットは、50次元空間における75点ずつの2つのグループを示しています。どちらも原点を中心とした対称ガウス分布からサンプリングされていますが、一方は他方よりも50倍密に分散しています。「小さな」分布は事実上、大きな分布に含まれています。</p>
 
   <div class="l-page-outset tsne-group" id="figures-09" data-id="09">
   </div>
 
-  <p>The perplexity 30 view shows the basic topology correctly, but again t-SNE greatly exaggerates the size of the smaller group of points. At perplexity 50, there's a new phenomenon: the outer group becomes a circle, as the plot tries to depict the fact that all its points are about the same distance from the inner group. If you looked at this image alone, it would be easy to misread these outer points as a one-dimensional structure.</p>
+<p>パープレキシティ30の表示は基本的な位相を正しく示していますが、再びt-SNEは小さな点グループのサイズを大幅に誇張しています。パープレキシティ50では、新しい現象が起こります：外側のグループが円になります。これは、すべての点が内側のグループからほぼ同じ距離にあるという事実を描こうとしているためです。この画像だけを見ると、これらの外側の点を一次元構造として誤読しやすいでしょう。</p>
 
-  <p>What about more complicated types of topology? This may be a subject dearer to mathematicians than to practical data analysts, but interesting low-dimensional structures are occasionally found in the wild.</p>
+<p>より複雑な位相のタイプについてはどうでしょうか？これは実用的データアナリストよりも数学者により愛される主題かもしれませんが、興味深い低次元構造が時折野生で発見されます。</p>
 
-  <p>Consider a set of points that trace a link or a knot in three dimensions. Once again, looking at multiple perplexity values gives the most complete picture. Low perplexity values give two completely separate loops; high ones show a kind of global connectivity.</p>
+<p>3次元でリンクや結び目を描く点の集合を考えてみましょう。再び、複数のパープレキシティ値を見ることで最も完全な図を得られます。低いパープレキシティ値では2つの完全に分離したループが得られ、高いものでは一種の大域的接続性を示します。</p>
 
   <div class="l-page-outset tsne-group" id="figures-10" data-id="10">
   </div>
   <div class="l-page-outset tsne-group" id="figures-11" data-id="11">
   </div>
 
-  <p>The trefoil knot is an interesting example of how multiple runs affect the outcome of t-SNE. Below are five runs of the perplexity-2 view.</p>
+<p>三葉結び目は、複数の実行がt-SNEの結果にどのように影響するかの興味深い例です。以下は、パープレキシティ2での5回の実行です。</p>
 
-  <p>The algorithm settles twice on a circle, which at least preserves the intrinsic topology. But in three of the runs it ends up with three different solutions which introduce artificial breaks. Using the dot color as a guide, you can see that the first and third runs are far from each other.</p>
+<p>アルゴリズムは2回円に落ち着き、これは少なくとも内在的位相を保持しています。しかし、3回の実行では、人工的な断絶を導入する3つの異なる解に到達しました。点の色をガイドとして使用すると、1回目と3回目の実行が互いに大きく異なることがわかります。</p>
 
   <div class="l-page-outset tsne-group" id="figures-12" data-id="12">
   </div>
 
-  <p>Five runs at perplexity 50, however, give results that (up to symmetry) are visually identical. Evidently some problems are easier than others to optimize.</p>
+  <p>しかし、パープレキシティ50での5回の実行は、（対称性を除いて）視覚的に同一の結果を与えます。明らかに、最適化が他よりも容易な問題があります。</p>
 
   <div class="l-page-outset tsne-group" id="figures-13" data-id="13">
   </div>
 
   <hr>
 
-  <h2>Conclusion</h2>
+<h2>結論</h2>
 
-  <p>There's a reason that t-SNE has become so popular: it's incredibly flexible, and can often find structure where other dimensionality-reduction algorithms cannot. Unfortunately, that very flexibility makes it tricky to interpret. Out of sight from the user, the algorithm makes all sorts of adjustments that tidy up its visualizations.
-  Don't let the hidden "magic" scare you away from the whole technique, though. The good news is that by studying how t-SNE behaves in simple cases, it's possible to develop an intuition for what's going on.</p>
+<p>t-SNEがこれほど人気になった理由があります：それは信じられないほど柔軟で、他の次元削減アルゴリズムが見つけられない場所で構造を見つけることができるのです。残念ながら、まさにその柔軟性が解釈を困難にします。ユーザーの目に触れないところで、アルゴリズムは可視化を整理するあらゆる種類の調整を行っています。
+しかし、隠れた「魔法」に怖がって全体の技術から遠ざからないでください。良いニュースは、単純なケースでt-SNEがどのように動作するかを研究することで、何が起こっているかについての直感を発達させることが可能だということです。</p>
 
 
   <!-- bring the figures to life -->
