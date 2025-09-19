@@ -7,5 +7,8 @@
   },
   "scripts": {
     "build": " cp -rf node_modules/material-design-icons/iconfont/ public/ && node bin/include.js > public/index.html"
+  },
+  "devDependencies": {
+    "jsdom": "^27.0.0"
   }
 }
