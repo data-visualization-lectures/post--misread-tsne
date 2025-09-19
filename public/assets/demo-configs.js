@@ -426,8 +426,7 @@ function randomJump(n, dim) {
 var demos = [
   {
     name: 'Grid',
-    description: 'A square grid with equal spacing between points. ' +
-        'Try convergence at different sizes.',
+    description: '点と点の感覚が等しい正方格子です。さまざまなサイズで収束を試してみてください。',
     options: [
       {
         name: 'Points Per Side',
@@ -438,7 +437,7 @@ var demos = [
   },
   {
     name: 'Two Clusters',
-    description: 'Two clusters with equal numbers of points.',
+    description: '同数の点を持つ2つのクラスターです。',
     options: [
       {
         name: 'Points Per Cluster',
@@ -453,9 +452,7 @@ var demos = [
   },
   {
     name: 'Three Clusters',
-    description: 'Three clusters with equal numbers of points, but at ' +
-         'different distances from each other. Cluster distances are ' +
-         'only apparent at certain perplexities',
+    description: '同数の点を持つ3つのクラスターですが、互いの距離が異なります。クラスター間の距離は、特定のパープレキシティでのみ明らかになります。',
     options: [
       {
         name: 'Points Per Cluster',
@@ -470,8 +467,7 @@ var demos = [
   },
   {
     name: 'Two Different-Sized Clusters',
-    description: 'Two clusters with equal numbers of points, but different ' +
-        'variances within the clusters. Cluster separation depends on perplexity.',
+    description: '同数の点を持つ2つのクラスターですが、クラスター内の分散が異なります。クラスターの分離はパープレキシティに依存します。',
     options: [
       {
         name: 'Points Per Cluster',
@@ -490,8 +486,7 @@ var demos = [
   },
   {
     name: 'Two Long Linear Clusters',
-    description: 'Two sets of points, arranged in parallel lines that ' +
-        'are close to each other. Note curvature of lines.',
+    description: '互いに近い平行線上に配置された2組の点の集合です。線の曲がりに注目してください。',
     options: [
       {
         name: 'Points Per Cluster',
@@ -502,8 +497,7 @@ var demos = [
   },
   {
     name: 'Cluster In Cluster',
-    description: 'A dense, tight cluster inside of a wide, sparse cluster. ' +
-      'Perplexity makes a big difference here.',
+    description: '広くて疎なクラスターの中にある、密でタイトなクラスターです。ここではパープレキシティが大きな違いを生みます。',
     options: [
       {
         name: 'Points Per Cluster',
@@ -518,8 +512,7 @@ var demos = [
   },
   {
     name: 'Circle (Evenly Spaced)',
-    description: 'Points evenly distributed in a circle. ' +
-        'Hue corresponds to angle in the circle.',
+    description: '円の中に均等に分布した点です。色相は円の中の角度に対応します。',
     options: [
       {
         name: 'Number Of Points',
@@ -530,8 +523,7 @@ var demos = [
   },
   {
     name: 'Circle (Randomly Spaced)',
-    description: 'Points randomly distributed in a circle. ' +
-        'Hue corresponds to angle in the circle.',
+    description: '円の中にランダムに分布した点です。色相は円の中の角度に対応します。',
     options: [
       {
         name: 'Number Of Points',
@@ -542,9 +534,7 @@ var demos = [
   },
   {
     name: 'Gaussian Cloud',
-    description: 'Points in a unit Gaussian distribution. ' +
-      'Data is entirely random, so any visible subclusters are ' +
-      'not statistically significant',
+    description: '単位ガウス分布内の点です。データは完全にランダムなので、目に見えるサブクラスターは統計的に有意ではありません。',
     options: [
       {
         name: 'Number Of Points',
@@ -559,8 +549,7 @@ var demos = [
   },
   {
     name: 'Ellipsoidal Gaussian Cloud',
-    description: 'Points in an ellipsoidal Gaussian distribution. ' +
-     ' Dimension n has variance 1/n. Elongation is visible in plot.',
+    description: '楕円ガウス分布内の点です。次元nは分散1/nを持ちます。プロットで伸びがわかります。',
     options: [
       {
         name: 'Number Of Points',
@@ -575,8 +564,7 @@ var demos = [
   },
   {
     name: 'Trefoil Knot',
-    description: 'Points arranged in 3D, following a trefoil knot. ' +
-      'Different runs may give different results.',
+    description: '三つ葉結び目に沿って3Dに配置された点です。実行ごとに異なる結果になることがあります。',
     options: [
       {
         name: 'Number Of Points',
@@ -587,8 +575,7 @@ var demos = [
   },
   {
     name: 'Linked Rings',
-    description: 'Points arranged in 3D, on two linked circles. ' +
-      'Different runs may give different results.',
+    description: '2つのリンクした円上に3Dで配置された点です。実行ごとに異なる結果になることがあります。',
     options: [
       {
         name: 'Number Of Points',
@@ -599,7 +586,7 @@ var demos = [
   },
   {
     name: 'Unlinked Rings',
-    description: 'Points arranged in 3D, on two unlinked circles',
+    description: '2つのリンクしていない円上に3Dで配置された点です。',
     options: [
       {
         name: 'Number Of Points',
@@ -610,8 +597,7 @@ var demos = [
   },
   {
     name: 'Orthogonal Steps',
-    description: 'Points related by mutually orthogonal steps. ' +
-      'Very similar to a random walk.',
+    description: '互いに直交するステップで関連付けられた点です。ランダムウォークに非常に似ています。',
     options: [
       {
         name: 'Number Of Points',
@@ -622,8 +608,7 @@ var demos = [
   },
   {
     name: 'Random Walk',
-    description: 'Random (Gaussian) walk. ' +
-      'Smoother than you might think.',
+    description: 'ランダム（ガウス）ウォークです。思ったよりスムーズです。',
       options: [{
         name: 'Number Of Points',
         min: 1, max: 1000, start: 100,
@@ -637,7 +622,7 @@ var demos = [
   },
   {
     name: 'Random Jump',
-    description: 'Random (Gaussian) Jump',
+    description: 'ランダム（ガウス）ジャンプ',
     options: [
       {
         name: 'Number Of Points',
@@ -652,8 +637,7 @@ var demos = [
   },
   {
     name: 'Equally Spaced',
-    description: 'A set of points, where distances between all pairs of ' +
-        'points are the same in the original space.',
+    description: '元の空間ですべての点のペア間の距離が同じである点の集合です。',
     options: [
       {
         name: 'Number Of Points',
@@ -664,7 +648,7 @@ var demos = [
   },
   {
     name: 'Uniform Distribution',
-    description: 'Points uniformly distributed in a unit cube.',
+    description: '単位立方体内に一様に分布した点です。',
     options: [
       {
         name: 'Number Of Points',
